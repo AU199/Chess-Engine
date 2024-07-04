@@ -119,7 +119,7 @@ class AI:
             return score
     
     
-    def minMax(self,fen,depth, alpha, beta,Maximising:True):
+    def minMax(self,fen,depth, alpha, beta,Maximising:bool):
         
         board = chess.Board(fen=fen)
         
@@ -168,7 +168,7 @@ class AI:
                     break
             return curr_best
 
-    def make_move(self, fen, a_moves, depth):
+    def make_move(self, fen, a_moves, depth, max_q):
         board = chess.Board(fen)
         legal_moves = list(board.legal_moves)
         self.a_moves = a_moves
@@ -182,7 +182,7 @@ class AI:
             for i in range(len(legal_moves)):
                 move = legal_moves[i]
                 board.push(move=move)
-                val = self.minMax(board.fen(),depth=depth, alpha= -1000, beta= 1000,Maximising=True)
+                val = self.minMax(board.fen(),depth=depth, alpha= -1000, beta= 1000,Maximising=max_q)
                 all_v.append(val)
                 board.pop()
                 if val > best_val:

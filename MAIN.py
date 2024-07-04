@@ -4,7 +4,7 @@ import logic
 import time
 import ai
 
-board = logic.Board(fen = 'r2q1rk1/pp1nbppp/2p1pn2/3p4/3P4/2N1PN2/PPQ1BPPP/R1B2RK1 w - - 0 10')
+board = logic.Board(fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1')
 get_fen = board.get_fen()
 who_am_i = str(input("What side do you want to play, 'White':'W' || 'Black':'B' "))
 opp_color = None
@@ -42,10 +42,10 @@ while not board.get_game_over():
     
     elif who_am_i == '':
         if images[board.get_whomes_turn()] == 'B':
-            hio = ai_runner_black.make_move(board.get_fen(), board.board.fullmove_number - 1,1)
+            hio = ai_runner_black.make_move(board.get_fen(), board.board.fullmove_number - 1,1,False)
             board.make_move(hio[0])
         else:
-            hio = ai_runner.make_move(board.get_fen(), board.board.fullmove_number - 1,1)
+            hio = ai_runner.make_move(board.get_fen(), board.board.fullmove_number - 1,1,True)
             board.make_move(hio[0])
             
         
