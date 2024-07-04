@@ -121,15 +121,37 @@ class AI:
     
     def minMax(self,fen,depth, alpha, beta,Maximising:bool):
         
+        """
+        This function is called by the make move function in order to evaluate a tree of all possible moves after devling into it by the given depth
+        
+        Args:
+            fen(String): The FEN of the current Position 
+            depth(Integer): The depth that the function needs to recurse too
+            alpha(Integer): The current highest value found in the tree, if the current value is greater, than we break out of the loop and return the 
+            beta(Integer): The current lowest value found in the tree, if the current value is less than alpha, we break out of the loop
+            Maximising(Bool): Are we maximising for ourselves
+
+        Returns:
+            Float: Returns the best evaluation of the move
+        """
+        
+        
+        
+        
+        
+        
+        
         board = chess.Board(fen=fen)
         
         if board.is_game_over() or depth == 0:
             if not board.is_checkmate():
                 return self.eval(board)
-            if board.is_checkmate():
+            if board.is_checkmate() and Maximising:
                 return 1000000
+            elif board.is_checkmate() and not Maximising:
+                return -1000000
         if board.can_claim_draw():
-                return -1000
+                return -100000
         
         if Maximising:
             curr_best = -1000 if self.color == 'W' else 1000
@@ -169,6 +191,24 @@ class AI:
             return curr_best
 
     def make_move(self, fen, a_moves, depth, max_q):
+        
+        
+        
+        """
+        This is the main function used to find and return the best move
+
+        Args:
+            fen (String): The current FEN of the board
+            a_moves (Integer): The amount of moves played in the game until now 
+            depth (Int): The depth we want to search
+            max_q (Bool): Whether or not we are currently maximising for ourselves 
+
+        Returns:
+            Move.uci(): Returns the best move from the list of all legal moves in a given position
+        """
+        
+        
+        
         board = chess.Board(fen)
         legal_moves = list(board.legal_moves)
         self.a_moves = a_moves
