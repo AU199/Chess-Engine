@@ -201,7 +201,7 @@ class AI:
             fen (String): The current FEN of the board
             a_moves (Integer): The amount of moves played in the game until now 
             depth (Int): The depth we want to search
-            max_q (Bool): Whether or not we are currently maximising for ourselves 
+            max_q (Bool): Whether or not we are currently maximising for ourselves.
 
         Returns:
             Move.uci(): Returns the best move from the list of all legal moves in a given position
