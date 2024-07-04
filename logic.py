@@ -4,8 +4,8 @@ import chess, chess.svg
 
 
 class Board:
-    def __init__(self):
-        self.board =chess.Board()
+    def __init__(self, fen):
+        self.board =chess.Board(fen)
     def check_promotion(self):
  
         for move in self.board.legal_moves:

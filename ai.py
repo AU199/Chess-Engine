@@ -1,9 +1,8 @@
 from types import NoneType
 import random
-import logic
 import chess
 
-Board = logic.Board()
+
 
 class AI:
     def __init__(self, fen, color, one_v_one: bool):
@@ -120,7 +119,7 @@ class AI:
             return score
     
     
-    def minMax(self,fen,depth, alpha, beta,color):
+    def minMax(self,fen,depth, alpha, beta,Maximising:True):
         
         board = chess.Board(fen=fen)
         
@@ -132,10 +131,7 @@ class AI:
         if board.can_claim_draw():
                 return -1000
         
-        
-        curr_turn = self.turn[Board.get_whomes_turn()]
-        
-        if curr_turn == self.color:
+        if Maximising:
             curr_best = -1000 if self.color == 'W' else 1000
             val_moves = list(board.generate_legal_moves())
             val = 0
@@ -143,7 +139,7 @@ class AI:
             for i in range(board.legal_moves.count()):
                 move = val_moves[i]
                 board.push(move= move)
-                val = self.minMax(board.fen(),depth= depth - 1, alpha = alpha, beta=beta,color=color)
+                val = self.minMax(board.fen(),depth= depth - 1, alpha = alpha, beta=beta,Maximising=False)
                 board.pop()
                 
                 if val > curr_best:
@@ -160,7 +156,7 @@ class AI:
             
             for move in val_moves:
                 board.push(move= move)
-                val = self.minMax(board.fen(),depth= depth - 1, alpha = alpha, beta=beta, color = color)
+                val = self.minMax(board.fen(),depth= depth - 1, alpha = alpha, beta=beta, Maximising=True)
                 board.pop()
                 if val is NoneType:
                     return val
@@ -186,7 +182,7 @@ class AI:
             for i in range(len(legal_moves)):
                 move = legal_moves[i]
                 board.push(move=move)
-                val = self.minMax(board.fen(),depth=depth, alpha= -1000, beta= 1000,color=self.color)
+                val = self.minMax(board.fen(),depth=depth, alpha= -1000, beta= 1000,Maximising=True)
                 all_v.append(val)
                 board.pop()
                 if val > best_val:

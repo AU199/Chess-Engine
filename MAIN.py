@@ -4,7 +4,7 @@ import logic
 import time
 import ai
 
-board = logic.Board()
+board = logic.Board(fen = 'r2q1rk1/pp1nbppp/2p1pn2/3p4/3P4/2N1PN2/PPQ1BPPP/R1B2RK1 w - - 0 10')
 get_fen = board.get_fen()
 who_am_i = str(input("What side do you want to play, 'White':'W' || 'Black':'B' "))
 opp_color = None
@@ -21,9 +21,6 @@ def clear_console():
     if platform.system() == "Windows":
         os.system('cls') 
 
-
-# pygame.init()
-# screen = pygame.display.set_mode((480,480))
 square_size = 480 // 8
 images = {True:'W',False:'B'}
 
