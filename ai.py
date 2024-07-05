@@ -8,91 +8,10 @@ class AI:
     def __init__(self, fen, color, one_v_one: bool):
         self.board = chess.Board(fen=fen)
         self.color = color
-        self.piece_value = {'P': 1, 'N':3, 'B':3, 'R': 5,'Q': 9, 'K':0, 'k':0 }
+       
+        self.piece_value = {chess.PAWN: 1, chess.BISHOP: 3, chess.KNIGHT: 3, chess.KING: 200, chess.QUEEN: 9, chess.ROOK: 5}
         self.a_moves = 0
         self.turn = {True:'W',False:'B'}
-        self.piece_value_adj = {
-            'P': [
-        [10, 10, 10, 10, 10, 10, 10, 10],
-        [5, 5, 5, 5, 5, 5, 5, 5],
-        [1, 1, 2, 3, 3, 2, 1, 1],
-        [0.5, 0.5, 1, 2.5, 2.5, 1, 0.5, 0.5],
-        [0, 0, 0, 2, 2, 0, 0, 0],
-        [0.5, -0.5, -1, 0, 0, -1, -0.5, 0.5],
-        [0.5, 1, 1, -2, -2, 1, 1, 0.5],
-        [0, 0, 0, 0, 0, 0, 0, 0]
-    ],    
-            'p': [
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0.5, 1, 1, -2, -2, 1, 1, 0.5],
-        [0.5, -0.5, -1, 0, 0, -1, -0.5, 0.5],
-        [0, 0, 0, 2, 2, 0, 0, 0],
-        [0.5, 0.5, 1, 2.5, 2.5, 1, 0.5, 0.5],
-        [1, 1, 2, 3, 3, 2, 1, 1],
-        [5, 5, 5, 5, 5, 5, 5, 5],
-        [10, 10, 10, 10, 10, 10, 10, 10]
-    ],
-    'N': [
-        [-5, -4, -3, -3, -3, -3, -4, -5],
-        [-4, -2, 0, 0, 0, 0, -2, -4],
-        [-3, 0, 1, 1.5, 1.5, 1, 0, -3],
-        [-3, 0.5, 1.5, 2, 2, 1.5, 0.5, -3],
-        [-3, 0, 1.5, 2, 2, 1.5, 0, -3],
-        [-3, 0.5, 1, 1.5, 1.5, 1, 0.5, -3],
-        [-4, -2, 0, 0.5, 0.5, 0, -2, -4],
-        [-5, -4, -3, -3, -3, -3, -4, -5]
-    ],
-    'B': [
-        [-2, -1, -1, -1, -1, -1, -1, -2],
-        [-1, 0, 0, 0, 0, 0, 0, -1],
-        [-1, 0, 0.5, 1, 1, 0.5, 0, -1],
-        [-1, 0.5, 0.5, 1, 1, 0.5, 0.5, -1],
-        [-1, 0, 1, 1, 1, 1, 0, -1],
-        [-1, 1, 1, 1, 1, 1, 1, -1],
-        [-1, 0.5, 0, 0, 0, 0, 0.5, -1],
-        [-2, -1, -1, -1, -1, -1, -1, -2]
-    ],
-    'R': [
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0.5, 1, 1, 1, 1, 1, 1, 0.5],
-        [-0.5, 0, 0, 0, 0, 0, 0, -0.5],
-        [-0.5, 0, 0, 0, 0, 0, 0, -0.5],
-        [-0.5, 0, 0, 0, 0, 0, 0, -0.5],
-        [-0.5, 0, 0, 0, 0, 0, 0, -0.5],
-        [-0.5, 0, 0, 0, 0, 0, 0, -0.5],
-        [0, 0, 0, 0.5, 0.5, 0, 0, 0]
-    ],
-    'Q': [
-        [-2, -1, -1, -0.5, -0.5, -1, -1, -2],
-        [-1, 0, 0, 0, 0, 0, 0, -1],
-        [-1, 0, 0.5, 0.5, 0.5, 0.5, 0, -1],
-        [-0.5, 0, 0.5, 0.5, 0.5, 0.5, 0, -0.5],
-        [0, 0, 0.5, 0.5, 0.5, 0.5, 0, -0.5],
-        [-1, 0.5, 0.5, 0.5, 0.5, 0.5, 0, -1],
-        [-1, 0, 0.5, 0, 0, 0, 0, -1],
-        [-2, -1, -1, -0.5, -0.5, -1, -1, -2]
-    ],
-    'K': [
-        [-3, -4, -4, -5, -5, -4, -4, -3],
-        [-3, -4, -4, -5, -5, -4, -4, -3],
-        [-3, -4, -4, -5, -5, -4, -4, -3],
-        [-3, -4, -4, -5, -5, -4, -4, -3],
-        [-2, -3, -3, -4, -4, -3, -3, -2],
-        [-1, -2, -2, -2, -2, -2, -2, -1],
-        [2, 2, 0, 0, 0, 0, 2, 2],
-        [2, 3, 1, 0, 0, 1, 3, 2]
-    ],
-    'k': [
-        [2, 3, 1, 0, 0, 1, 3, 2],
-        [2, 2, 0, 0, 0, 0, 2, 2],
-        [-1, -2, -2, -2, -2, -2, -2, -1],
-        [-2, -3, -3, -4, -4, -3, -3, -2],
-        [-3, -4, -4, -5, -5, -4, -4, -3],
-        [-3, -4, -4, -5, -5, -4, -4, -3],
-        [-3, -4, -4, -5, -5, -4, -4, -3],
-        [-3, -4, -4, -5, -5, -4, -4, -3]
-    ]
-        }
         self.one_v_one = one_v_one
         self.index = -1
         
@@ -103,19 +22,16 @@ class AI:
             
             score_through_it = []
             score = 0
-            for r in range(7,0,-1):
-                for c in range(7,0,-1):
-                    piece = board.piece_at(chess.square(c,r))
+            for square in chess.SQUARES:
+                    piece = board.piece_at(square)
                     if piece:
-                        curr_piece = piece.symbol()
-                        if curr_piece.isupper():
-                            score += self.piece_value[curr_piece] + self.piece_value_adj[curr_piece][r][c]
+                        
+                        if piece.color == chess.WHITE:
+                            score += self.piece_value[piece.piece_type] 
                         else:
-                            if curr_piece != 'k':
-                                score -= self.piece_value[curr_piece.upper()] + self.piece_value_adj[curr_piece.upper()][r][c]
-                            else:
-                                score -= self.piece_value[curr_piece] + self.piece_value_adj[curr_piece][r][c]
-                    
+                           
+                            score -= self.piece_value[piece.piece_type] 
+
             return score
     
     
@@ -150,18 +66,19 @@ class AI:
                 return 1000000
             elif board.is_checkmate() and not Maximising:
                 return -1000000
-        if board.can_claim_draw():
-                return -100000
+
         
         if Maximising:
-            curr_best = -1000 if self.color == 'W' else 1000
+            curr_best = -1000 
             val_moves = list(board.generate_legal_moves())
             val = 0
             
             for i in range(board.legal_moves.count()):
                 move = val_moves[i]
                 board.push(move= move)
-                val = self.minMax(board.fen(),depth= depth - 1, alpha = alpha, beta=beta,Maximising=False)
+                if board.can_claim_draw():
+                    return -100000 if self.color == 'W' else 1000000
+                val = self.minMax(board.fen(),depth= depth - 1, alpha = alpha, beta=beta,Maximising=False) if self.color == 'B' else self.minMax(board.fen(),depth= depth - 1, alpha = alpha, beta=beta,Maximising=False) 
                 board.pop()
                 
                 if val > curr_best:
@@ -212,7 +129,7 @@ class AI:
         board = chess.Board(fen)
         legal_moves = list(board.legal_moves)
         self.a_moves = a_moves
-        best_val = -100
+        best_val = -100 if self.color == 'W' else 100
         all_v = []
         bestIndex = 0
         white_pawn_opening_moves = ['e2e4','d2d4',  'c2c4',  'f2f4',  'g2g3']
@@ -222,18 +139,18 @@ class AI:
             for i in range(len(legal_moves)):
                 move = legal_moves[i]
                 board.push(move=move)
-                val = self.minMax(board.fen(),depth=depth, alpha= -1000, beta= 1000,Maximising=max_q)
+                val = self.minMax(board.fen(),depth=depth, alpha= -1000 , beta= 1000 ,Maximising=max_q)
                 all_v.append(val)
                 board.pop()
-                if val > best_val:
+                if (val > best_val and self.color == "W") or (val < best_val and self.color == 'B') :
                     best_val = val
                     bestIndex = i
-            return legal_moves[bestIndex], best_val
+            return legal_moves[bestIndex]
         else:
             self.index = random.randint(0,len(white_pawn_opening_moves)-1)
             if board.turn:
-                return chess.Move.from_uci(white_pawn_opening_moves[self.index]),0
+                return chess.Move.from_uci(white_pawn_opening_moves[self.index])
             else:
-                return chess.Move.from_uci(black_pawn_opening_moves[self.index][random.randint(0,len(black_pawn_opening_moves[self.index])-1)]),0
+                return chess.Move.from_uci(black_pawn_opening_moves[self.index][random.randint(0,len(black_pawn_opening_moves[self.index])-1)])
 
             
